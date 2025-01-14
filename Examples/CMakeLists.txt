@@ -12,3 +12,4 @@ find_package(CUDAToolkit REQUIRED)
 
 add_subdirectory(Simple)
 add_subdirectory(Histogram)
+add_subdirectory(FloydWarshall)
