@@ -11,3 +11,4 @@ find_package(OpenCV REQUIRED)
 find_package(CUDAToolkit REQUIRED)
 
 add_subdirectory(Simple)
+add_subdirectory(Histogram)
