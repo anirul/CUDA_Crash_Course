@@ -9,8 +9,6 @@ __global__ void simpleKernel(const float* in1, const float* in2, float* out, int
 {
     int idx = blockDim.x * blockIdx.x + threadIdx.x;
     if (idx < size) {
-        // Do whatever your OpenCL kernel was doing;
-        // for example, just add them:
         out[idx] = in1[idx] + in2[idx];
     }
 }
@@ -31,13 +29,16 @@ int main(int ac, char** av)
         const int vector_size = 1 << 20; // e.g. 1 million elements
         std::vector<float> in1(vector_size), in2(vector_size), out(vector_size);
 
-        for (int i = 0; i < vector_size; i++) {
+        for (int i = 0; i < vector_size; i++)
+        {
             in1[i] = static_cast<float>(std::rand());
             in2[i] = static_cast<float>(std::rand());
         }
 
         // 4. Allocate device memory
-        float* d_in1, * d_in2, * d_out;
+        float* d_in1;
+        float* d_in2;
+        float* d_out;
         cudaMalloc(&d_in1, vector_size * sizeof(float));
         cudaMalloc(&d_in2, vector_size * sizeof(float));
         cudaMalloc(&d_out, vector_size * sizeof(float));
@@ -54,7 +55,7 @@ int main(int ac, char** av)
         auto start = std::chrono::system_clock::now();
 
         // 8. Launch the kernel
-        simpleKernel << <gridSize, blockSize >> > (d_in1, d_in2, d_out, vector_size);
+        simpleKernel<<<gridSize, blockSize>>>(d_in1, d_in2, d_out, vector_size);
 
         // 9. Wait for the kernel to finish
         cudaDeviceSynchronize();
