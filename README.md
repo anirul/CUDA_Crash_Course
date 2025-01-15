@@ -35,7 +35,11 @@ cd build
 cmake .. -DCMAKE_TOOLCHAIN_FILE="../../../vcpkg/scripts/buildsystems/vcpkg.cmake"
 ```
 
-You can now either use VS2022 or jsut build!
+You can now either use VS2022 or just build!
+
+```pwrsh
+cmake --build build --config Release
+```
 
 ## Slides
 
