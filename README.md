@@ -7,12 +7,12 @@ Simple crash course for CUDA I wrote for the SAW. This contain samples and slide
 ### Prerequired
 
 You will need some prerequire before using this project.
-1- a CUDA compatible card (NVidia).
-2- an up to date driver (466 here).
-3- a version of visual studio that works (VS 2022 here).
-4- an up to date versin of [CMake](https://cmake.org/download/)
-5- an up to date version of [CUDA](https://developer.nvidia.com/cuda-downloads)
-6- a version of [VCPKG](https://vcpkg.io/)
+1. a CUDA compatible card (NVidia).
+2. an up to date driver (466 here).
+3. a version of visual studio that works (VS 2022 here).
+4. an up to date versin of [CMake](https://cmake.org/download/)
+5. an up to date version of [CUDA](https://developer.nvidia.com/cuda-downloads)
+6. a version of [VCPKG](https://vcpkg.io/)
 
 ### Install the software
 
