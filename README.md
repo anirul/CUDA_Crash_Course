@@ -38,7 +38,7 @@ cmake .. -DCMAKE_TOOLCHAIN_FILE="../../../vcpkg/scripts/buildsystems/vcpkg.cmake
 You can now either use VS2022 or just build!
 
 ```pwrsh
-cmake --build build --config Release
+cmake --build . --config Release
 ```
 
 ## Slides
