@@ -7,7 +7,6 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(absl CONFIG REQUIRED)
-find_package(GLUT REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(CUDAToolkit REQUIRED)
 

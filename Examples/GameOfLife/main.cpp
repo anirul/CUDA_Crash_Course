@@ -35,8 +35,8 @@ int main(int argc, char** argv)
     try {
         
         // Frame size
-        unsigned int width  = 1920;
-        unsigned int height = 1080;
+        unsigned int width  = 1280;
+        unsigned int height = 720;
         unsigned int nb_col = 1;
 
         std::cout << "Frame size     : " << width << " x " << height << "\n";
