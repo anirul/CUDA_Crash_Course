@@ -25,7 +25,10 @@ int main(int argc, char** argv)
     absl::ParseCommandLine(argc, argv);
 
     // Gather flag values in local variables
-    unsigned int device     = absl::GetFlag(FLAGS_device);
+    unsigned int device = absl::GetFlag(FLAGS_device);
+    unsigned int seed = absl::GetFlag(FLAGS_seed);
+
+    srand(seed);
 
     std::cout << "CUDA device    : " << device << "\n\n";
 
