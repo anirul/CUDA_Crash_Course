@@ -19,13 +19,6 @@
     } while(0)
 
 // --------------------------------------------------------------------------
-//  Constants similar to your OpenCL kernel
-// --------------------------------------------------------------------------
-static const int  RADIUS          = 5;
-static const int  POWER_RADIUS    = RADIUS * RADIUS;
-static const int  INTENSITY_LEVEL = 6;
-
-// --------------------------------------------------------------------------
 //  Kernel: video_image
 //
 //  - in, out: pointers to byte arrays (uchar4 or grayscale).
@@ -51,110 +44,37 @@ __global__ void video_image_kernel(const unsigned char* in,
 
     // index in a row-major 1D array
     int idx = (y * width + x) * nb_col;
-
-    // We'll accumulate color in float4 if nb_col=4, or single float if nb_col=1.
-    // But let's unify by reading as float4 in memory—if nb_col=1, we store grayscale
-    // in .x and set the rest to 0.
-    // For simplicity, let's convert to float at load, do the same logic, then
-    // store back as unsigned char.
-
-    // We'll define a helper to load a pixel from in[] as float4
-    auto loadPixel = [&](int xx, int yy) -> float4 {
-        if (xx < 0 || xx >= width || yy < 0 || yy >= height) {
-            return make_float4(0, 0, 0, 1);
-        }
-        int i2 = (yy * width + xx) * nb_col;
-        if (nb_col == 4) {
-            // BGRA
-            float b = in[i2 + 0] / 255.0f;
-            float g = in[i2 + 1] / 255.0f;
-            float r = in[i2 + 2] / 255.0f;
-            float a = in[i2 + 3] / 255.0f;
-            return make_float4(r, g, b, a);
-        }
-        else {
-            // Gray
-            float g = in[i2] / 255.0f;
-            return make_float4(g, g, g, 1.0f);
-        }
-    };
-
-    // We'll define a helper to store a float4 result back to out[] as BGRA or grayscale
-    auto storePixel = [&](int iOut, float4 c){
-        // clamp to [0,1]
-        float r = fminf(fmaxf(c.x, 0.0f), 1.0f);
-        float g = fminf(fmaxf(c.y, 0.0f), 1.0f);
-        float b = fminf(fmaxf(c.z, 0.0f), 1.0f);
-        // for grayscale, we just store intensity in out[iOut]
-        if (nb_col == 4) {
-            out[iOut + 0] = static_cast<unsigned char>(b * 255.0f);
-            out[iOut + 1] = static_cast<unsigned char>(g * 255.0f);
-            out[iOut + 2] = static_cast<unsigned char>(r * 255.0f);
-            out[iOut + 3] = 255; // alpha
-        } else {
-            // simple average for grayscale
-            float gray = 0.3333f*(r+g+b);
-            out[iOut]   = static_cast<unsigned char>(gray * 255.0f);
-        }
-    };
-
-    // The logic from your kernel:
-    //   1) Gather color in a radius around (x, y).
-    //   2) Bucket by intensity into INTENSITY_LEVEL bins.
-    //   3) Pick the bin with the maximum count, average its color.
-
-    int intensity_count[INTENSITY_LEVEL];
-    float4 average_color[INTENSITY_LEVEL];
-
-    for (int i = 0; i < INTENSITY_LEVEL; ++i) {
-        intensity_count[i] = 0;
-        average_color[i]   = make_float4(0,0,0,0);
-    }
-
-    // gather
-    for (int xx = x - RADIUS; xx <= x + RADIUS; ++xx) {
-        for (int yy = y - RADIUS; yy <= y + RADIUS; ++yy) {
-            int dx = x - xx;
-            int dy = y - yy;
-            if ((dx*dx + dy*dy) > POWER_RADIUS) {
-                continue;
-            }
-            float4 c = loadPixel(xx, yy);
-            // intensity = average of (r,g,b)
-            float intensity = (c.x + c.y + c.z) / 3.0f;
-            int bin = (int)(intensity * INTENSITY_LEVEL);
-            if (bin >= INTENSITY_LEVEL) bin = INTENSITY_LEVEL - 1;
-
-            intensity_count[bin] += 1;
-            average_color[bin].x += c.x;
-            average_color[bin].y += c.y;
-            average_color[bin].z += c.z;
-            average_color[bin].w += c.w; // though alpha not used for bin picking
+    int alive = 0;
+    for (int dx = -1; dx < 2; ++dx)
+    {
+        for (int dy = -1; dy < 2; ++dy)
+        {
+            if (dx == 0 && dy == 0) continue;
+            int iddx = ((y + dy) * width + (x + dx)) * nb_col;
+            if (in[iddx] > 127) alive++;
         }
     }
-
-    // pick the bin with the highest count
-    int max_count = 0;
-    int max_bin   = 0;
-    for (int i = 0; i < INTENSITY_LEVEL; i++) {
-        if (intensity_count[i] > max_count) {
-            max_count = intensity_count[i];
-            max_bin   = i;
+    if (in[idx] > 127) {
+        if ((alive == 2) || (alive == 3))
+        {
+            out[idx] = 255;
+        }
+        else
+        {
+            out[idx] = 127;
         }
     }
-
-    // final color = average_color[max_bin] / max_count
-    float4 finalCol;
-    if (max_count > 0) {
-        finalCol.x = average_color[max_bin].x / max_count;
-        finalCol.y = average_color[max_bin].y / max_count;
-        finalCol.z = average_color[max_bin].z / max_count;
-        finalCol.w = 1.0f;
-    } else {
-        finalCol = make_float4(0,0,0,1);
+    else 
+    {
+        if (alive == 3) 
+        {
+            out[idx] = 255;
+        }
+        else
+        {
+            out[idx] = (in[idx] > 1) ? in[idx] - 1 : 0;
+        }
     }
-
-    storePixel(idx, finalCol);
 }
 
 // --------------------------------------------------------

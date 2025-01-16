@@ -17,7 +17,7 @@
 // ---------- Abseil Flags ----------
 // For example, replicate the flags from your old code:
 ABSL_FLAG(unsigned int, device, 0, "CUDA device index.");
-ABSL_FLAG(unsigned int, seed, 0, "random seed for the initial grid");
+ABSL_FLAG(unsigned int, seed, 42, "random seed for the initial grid");
 
 int main(int argc, char** argv)
 {
@@ -75,7 +75,7 @@ int main(int argc, char** argv)
             
             // f) Print timing or handle keys
             auto ms = std::chrono::duration_cast<std::chrono::microseconds>(durationNs).count();
-            std::cout << "Frame processed in " << ms << " ms\n";
+            std::cout << "Frame processed in " << ms << " us\n";
 
             int key = cv::waitKey(1);
             if (key == 27) { // ESC
