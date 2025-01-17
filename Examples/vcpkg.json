@@ -7,7 +7,6 @@
         "abseil",
         "opengl",
         "opencv",
-        "cuda",
-        "freeglut"
+        "cuda"
     ]
 }
