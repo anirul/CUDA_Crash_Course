@@ -43,7 +43,7 @@ cmake --build . --config Release
 
 ## Slides
 
-Thre slides are on goolge slides but there will be a copy of the PDF here.
+The slides are on google slides but there will be a copy of the PDF here.
 
 ## Examples
 
