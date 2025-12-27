@@ -7,6 +7,7 @@ Simple crash course for CUDA I wrote for the SAW. This contain samples and slide
 ### Prerequired
 
 You will need some prerequire before using this project.
+
 1. a CUDA compatible card (NVidia).
 2. an up to date driver (466 here).
 3. a version of visual studio that works (VS 2022 here).
@@ -16,29 +17,18 @@ You will need some prerequire before using this project.
 
 ### Install the software
 
-Check your installation of VCPKG and create this in the same directory than your VCPKG repo (I mean parallel).
-
-```
-\
-.vcpkg
-.CUDA_Crash_Course
-```
-
-Now clone and use the new cmake to create the repo.
+Clone and use the new cmake to create the repo. In case you are using linux just replace `windows` with `linux-release` or `linux-debug`, and then the build with the same.
 
 ```pwrsh
-https://github.com/anirul/CUDA_Crash_Course.git
+git clone https://github.com/anirul/CUDA_Crash_Course.git
 cd CUDA_Crash_Course
-cd Examples
-mkdir build
-cd build
-cmake .. -DCMAKE_TOOLCHAIN_FILE="../../../vcpkg/scripts/buildsystems/vcpkg.cmake"
+cmake --preset windows
 ```
 
 You can now either use VS2022 or just build!
 
 ```pwrsh
-cmake --build . --config Release
+cmake --build --preset windows-release
 ```
 
 ## Slides
@@ -50,12 +40,13 @@ The slides are on google slides but there will be a copy of the PDF here.
 ### Dependencies
 
 I use some dependencies:
+
 - Abseil
 - CMake
 - SDL
 - OpenGL
 - OpenCV
-- CUDA 11
+- CUDA
 
 ### Simple (C++)
 
