@@ -60,6 +60,10 @@ Implementing a fast version of [Floyd Warshall](http://en.wikipedia.org/wiki/Flo
 
 Local memory working group and advance structures in CUDA. Basic notion of dispatching computation and reducing it in another kernel (2 kernel operation).
 
+### Game of life (C++ - abseil / OpenGL)
+
+An implementation in CUDA of [Conway's game of life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) in CUDA using OpenGL for displaying the result (with some decaying colors).
+
 ### Video (C++ - abseil / OpenCV / OpenGL)
 
 Get video from OpenCV make modification with CUDA and send it back to OpenGL to draw it on screen. It come from my own example. It shows some interaction between OpenCV, CUDA and OpenGL.
