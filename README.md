@@ -21,6 +21,7 @@ Clone and use the new cmake to create the repo. In case you are using linux just
 
 ```pwrsh
 git clone https://github.com/anirul/CUDA_Crash_Course.git
+git submodule update --init --recursive
 cd CUDA_Crash_Course
 cmake --preset windows
 ```
