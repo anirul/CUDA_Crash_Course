@@ -27,4 +27,4 @@
 *.out
 *.app
 
-Examples/[Bb]uild/**
+[Bb]uild/**

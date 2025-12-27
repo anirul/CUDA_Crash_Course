@@ -1,0 +1,13 @@
+{
+  "name": "cuda-crash-course",
+  "version-string": "0.0.1-alpha",
+  "homepage": "https://github.com/anirul/CUDA_Crash_Course/",
+  "description": "CUDA Crash Course.",
+  "dependencies": [
+    "abseil",
+    "opengl",
+    "opencv",
+    "cuda"
+  ],
+  "builtin-baseline": "84bab45d415d22042bd0b9081aea57f362da3f35"
+}
